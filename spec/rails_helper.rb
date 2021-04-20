@@ -48,7 +48,7 @@ RSpec.configure do |config|
   end
 
   # FACTORY_BOT
-  config.include FactoryBot::System::Methods
+  config.include FactoryBot::Syntax::Methods
 
   # If you're not using ActiveRecord, or you'd prefer not to run each of your
   # examples within a transaction, remove the following line or assign false
