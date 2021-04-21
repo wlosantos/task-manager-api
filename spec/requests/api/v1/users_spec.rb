@@ -5,7 +5,7 @@ RSpec.describe "Api::V1::Users", type: :request do
   let(:user_id) { user.id }
   before { host! 'api.task-manager.dev' }
 
-  describe 'GET users/:id' do
+  describe 'GET /users/:id' do
     before do
       headers = { 'Accept': 'application/vnd.taskmanager.v1' }
       get "/users/#{user_id}", params: {}, headers: headers
@@ -25,6 +25,37 @@ RSpec.describe "Api::V1::Users", type: :request do
       let(:user_id) { 1000 }
       it 'returns status code 404' do
         expect(response).to have_http_status(404)
+      end
+    end
+  end
+
+  describe 'POST /users' do
+    before do
+      headers = { 'Accept': 'application/vnd.tastmanager.v1' }
+      post '/users', params: { user: user_params }, headers: headers
+    end
+
+    context 'when the request params are valid' do
+      let(:user_params) { attributes_for(:user) }
+
+      it 'returns the status code 201' do
+        expect(response).to have_http_status(201)
+      end
+      it 'return the json data users' do
+        user_response = JSON.parse(response.body)
+        expect(user_response['email']).to eq(user_params[:email])
+      end
+    end
+
+    context 'when the request params are invalid' do
+      let(:user_params) { attributes_for(:user, email: 'invalid@') }
+
+      it 'returns the status code 422' do
+        expect(response).to have_http_status(422)
+      end
+      it 'returns the json data for the errors' do
+        user_response = JSON.parse(response.body)
+        expect(user_response).to have_key('errors')
       end
     end
   end
