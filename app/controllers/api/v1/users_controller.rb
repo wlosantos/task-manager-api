@@ -1,5 +1,7 @@
 class Api::V1::UsersController < ApplicationController
 
+  before_action :set_users, only: %i[ update destroy ]
+
   def show
     begin
       user = User.find(params[:id])
@@ -19,22 +21,23 @@ class Api::V1::UsersController < ApplicationController
   end
 
   def update
-    user = User.find(params[:id])
-
-    if user.update(user_params)
-      render json: user, status: :ok
+    if @user.update(user_params)
+      render json: @user, status: :ok
     else
-      render json: { errors: user.errors }, status: :unprocessable_entity
+      render json: { errors: @user.errors }, status: :unprocessable_entity
     end
   end
 
   def destroy
-    user = User.find(params[:id])
-    user.destroy
+    @user.destroy
     head 204
   end
 
   private
+
+  def set_users
+    @user = User.find(params[:id])
+  end
 
   def user_params
     params.require(:user).permit(:email, :password, :password_confirmation)
