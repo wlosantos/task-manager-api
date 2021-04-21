@@ -9,6 +9,7 @@ gem 'puma', '~> 5.0'
 
 gem 'bootsnap', '>= 1.4.4', require: false
 
+gem 'devise'
 # gem 'rack-cors'
 
 group :development, :test do
@@ -26,6 +27,7 @@ end
 group :development do
   gem 'listen', '~> 3.3'
   gem 'spring'
+  gem 'spring-commands-rspec'
 end
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
