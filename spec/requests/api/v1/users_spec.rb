@@ -42,8 +42,8 @@ RSpec.describe "Api::V1::Users", type: :request do
         expect(response).to have_http_status(201)
       end
       it 'return the json data users' do
-        user_response = JSON.parse(response.body)
-        expect(user_response['email']).to eq(user_params[:email])
+        user_response = JSON.parse(response.body, symbolize_names: true)
+        expect(user_response[:email]).to eq(user_params[:email])
       end
     end
 
@@ -54,8 +54,8 @@ RSpec.describe "Api::V1::Users", type: :request do
         expect(response).to have_http_status(422)
       end
       it 'returns the json data for the errors' do
-        user_response = JSON.parse(response.body)
-        expect(user_response).to have_key('errors')
+        user_response = JSON.parse(response.body, symbolize_names: true)
+        expect(user_response).to have_key(:errors)
       end
     end
   end
