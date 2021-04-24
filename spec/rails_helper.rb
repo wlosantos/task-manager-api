@@ -54,7 +54,7 @@ RSpec.configure do |config|
   # FACTORY_BOT
   config.include FactoryBot::Syntax::Methods
   # Support tests
-  config.include RequestSpecHelper, type: :request
+  config.include RequestSpecHelper
 
   # If you're not using ActiveRecord, or you'd prefer not to run each of your
   # examples within a transaction, remove the following line or assign false
