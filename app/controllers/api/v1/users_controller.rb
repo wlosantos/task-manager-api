@@ -1,7 +1,7 @@
 class Api::V1::UsersController < ApplicationController
 
   before_action :set_users, only: %i[ update destroy ]
-  # before_action :authenticate_with_token!, only: %i[ update destroy ]
+  before_action :authenticate_with_token!, only: %i[ update destroy ]
 
   def show
     begin
@@ -37,7 +37,7 @@ class Api::V1::UsersController < ApplicationController
   private
 
   def set_users
-    @user = User.find(params[:id])
+    @user = current_user
   end
 
   def user_params
