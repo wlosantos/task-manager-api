@@ -1,9 +1,9 @@
 FactoryBot.define do
   factory :task do
-    title { "MyString" }
-    description { "MyText" }
+    title { Faker::Lorem.sentence }
+    description { Faker::Lorem.paragraph }
     done { false }
-    deadline { "2021-04-24 17:14:17" }
-    user { nil }
+    deadline { Faker::Date.forward }
+    user
   end
 end
