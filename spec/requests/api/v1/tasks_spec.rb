@@ -43,4 +43,42 @@ RSpec.describe "Api::V1::Tasks", type: :request do
 
   end
 
+  describe 'POST /tasks' do
+    let(:task) { create(:task, user: user) }
+    before do
+      post '/tasks', params: { task: task_params }.to_json, headers: headers
+    end
+
+    context 'when the params is valid' do
+      let(:task_params) { attributes_for(:task) }
+
+      it 'returns the status code 201' do
+        expect(response).to have_http_status(201)
+      end
+      it 'save the task in the database' do
+        expect(Task.find_by(title: task_params[:title])).not_to be_nil
+      end
+      it 'returns the json for created task' do
+        expect(json_body[:title]).to eq(task_params[:title])
+      end
+      it 'assigns the created task to the current user' do
+        expect(json_body[:user_id]).to eq(user.id)
+      end
+    end
+
+    context 'when the params is invalid' do
+      let(:task_params) { attributes_for(:task, title: '') }
+
+      it 'returns the status code 422' do
+        expect(response).to have_http_status(422)
+      end
+      it 'does not save the task in the database' do
+        expect(Task.find_by(title: task_params[:title])).to be_nil
+      end
+      it 'returns the json task error' do
+        expect(json_body[:errors]).to have_key(:title)
+      end
+    end
+  end
+
 end
