@@ -1,7 +1,7 @@
 class Api::V1::TasksController < ApplicationController
 
   before_action :authenticate_with_token!
-  before_action :set_task, only: %i[ update ]
+  before_action :set_task, only: %i[ update destroy ]
 
   def index
     tasks = current_user.tasks.all
@@ -33,6 +33,11 @@ class Api::V1::TasksController < ApplicationController
     else
       render json: { errors: @task.errors }, status: 422
     end
+  end
+
+  def destroy
+    @task.destroy
+    head 204
   end
 
   private
