@@ -1,6 +1,7 @@
 class Api::V1::TasksController < ApplicationController
 
   before_action :authenticate_with_token!
+  before_action :set_task, only: %i[ update ]
 
   def index
     tasks = current_user.tasks.all
@@ -26,7 +27,19 @@ class Api::V1::TasksController < ApplicationController
     end
   end
 
+  def update
+    if @task.update(task_params)
+      render json: @task, status: 200
+    else
+      render json: { errors: @task.errors }, status: 422
+    end
+  end
+
   private
+
+  def set_task
+    @task = current_user.tasks.find_by(id: params[:id])
+  end
 
   def task_params
     params.require(:task).permit(:title, :description, :done, :deadline)
