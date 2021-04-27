@@ -4,7 +4,7 @@ class Api::V2::TasksController < ApplicationController
   before_action :set_task, only: %i[ update destroy ]
 
   def index
-    tasks = current_user.tasks.all
+    tasks = current_user.tasks.ransack(params[:q]).result
     render json: tasks, status: :ok
   end
 

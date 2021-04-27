@@ -12,17 +12,37 @@ RSpec.describe "Api::V2::Tasks", type: :request do
   end
 
   describe 'GET /tasks' do
-    before do
-      create_list(:task, 5, user: user)
-      get '/tasks', params: {}, headers: headers
+
+    context 'when no filter params is sent' do
+      before do
+        create_list(:task, 5, user: user)
+        get '/tasks', params: {}, headers: headers
+      end
+
+      it 'returns status code 200' do
+        expect(response).to have_http_status(200)
+      end
+      it 'returns 5 tasks from database' do
+        expect(json_body[:data].count).to eq(5)
+      end
     end
 
-    it 'returns status code 200' do
-      expect(response).to have_http_status(200)
+    context 'when filter params is sent' do
+      let!(:notebook_task_1) { create(:task, title: 'Check if notebook is broben', user: user) }
+      let!(:notebook_task_2) { create(:task, title: 'Buy new notebook', user: user) }
+      let!(:other_task_1) { create(:task, title: 'fix the door', user: user) }
+      let!(:other_task_2) { create(:task, title: 'buy a new car', user: user) }
+
+      before do
+        get '/tasks?q[title_cont]=note', params: {}, headers: headers
+      end
+
+      it 'returns only the tasks matching' do
+        returned_task_titles = json_body[:data].map { |t| t[:attributes][:title] }
+        expect(returned_task_titles).to eq([ notebook_task_1.title, notebook_task_2.title ])
+      end
     end
-    it 'returns 5 tasks from database' do
-      expect(json_body[:data].count).to eq(5)
-    end
+
   end
 
   describe 'GET /tasks/:id' do
