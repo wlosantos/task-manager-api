@@ -10,6 +10,8 @@ gem 'puma', '~> 5.0'
 gem 'bootsnap', '>= 1.4.4', require: false
 
 gem 'devise'
+gem 'active_model_serializers', '~> 0.10.12'
+gem 'ransack', '~> 2.4', '>= 2.4.2'
 # gem 'rack-cors'
 
 group :development, :test do
