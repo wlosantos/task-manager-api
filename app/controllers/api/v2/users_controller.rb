@@ -1,4 +1,4 @@
-class Api::V2::UsersController < ApplicationController
+class Api::V2::UsersController < Api::V2::BaseController
 
   before_action :set_users, only: %i[ update destroy ]
   before_action :authenticate_with_token!, only: %i[ update destroy ]
