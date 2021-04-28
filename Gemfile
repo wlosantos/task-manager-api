@@ -12,6 +12,9 @@ gem 'bootsnap', '>= 1.4.4', require: false
 gem 'devise'
 gem 'active_model_serializers', '~> 0.10.12'
 gem 'ransack', '~> 2.4', '>= 2.4.2'
+
+gem 'omniauth'
+gem 'devise_token_auth'
 # gem 'rack-cors'
 
 group :development, :test do
