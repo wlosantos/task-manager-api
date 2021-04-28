@@ -15,7 +15,7 @@ gem 'ransack', '~> 2.4', '>= 2.4.2'
 
 gem 'omniauth'
 gem 'devise_token_auth'
-# gem 'rack-cors'
+gem 'rack-cors'
 
 group :development, :test do
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
